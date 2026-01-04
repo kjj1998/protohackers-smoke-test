@@ -2,10 +2,8 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"net"
-	"strings"
 )
 
 func main() {
@@ -27,16 +25,21 @@ func main() {
 }
 
 func handleConnection(conn net.Conn) {
-	reader := bufio.NewReader(conn)
-	message, err := reader.ReadString('\n')
-	if err != nil {
-		log.Printf("Read error: %v", err)
-		return
+	defer conn.Close()
+
+	scanner := bufio.NewScanner(conn)
+	var line string
+
+	for scanner.Scan() {
+		line = scanner.Text()
+		log.Printf("Scanned line: %s\n", line)
 	}
 
-	ackMsg := strings.ToUpper(strings.TrimSpace(message))
-	response := fmt.Sprintf("ACK: %s\n", ackMsg)
-	_, err = conn.Write([]byte(response))
+	if err := scanner.Err(); err != nil {
+		log.Printf("Scan error: %v", err)
+	}
+
+	_, err := conn.Write([]byte(line))
 	if err != nil {
 		log.Printf("Server write error: %v", err)
 	}
