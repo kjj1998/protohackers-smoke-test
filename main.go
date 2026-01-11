@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bufio"
+	"io"
 	"log"
 	"net"
 )
@@ -27,20 +27,11 @@ func main() {
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
 
-	scanner := bufio.NewScanner(conn)
-	var line string
+	written, err := io.Copy(conn, conn)
 
-	for scanner.Scan() {
-		line = scanner.Text()
-		log.Printf("Scanned line: %s\n", line)
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Printf("Scan error: %v", err)
-	}
-
-	_, err := conn.Write([]byte(line))
 	if err != nil {
 		log.Printf("Server write error: %v", err)
 	}
+
+	log.Printf("%v bytes copied\n", written)
 }

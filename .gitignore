@@ -30,3 +30,33 @@ go.work.sum
 
 # Editor/IDE
 .vscode/
+
+# Local .terraform directories
+.terraform/
+
+# .tfstate files and backups
+*.tfstate
+*.tfstate.backup
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, which might contain sensitive data.
+# If you manage .tfvars files in VCS, remove this line.
+*.tfvars
+*.tfvars.json
+
+# Ignore override files as they are usually used for local development
+# and not meant to be shared.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform plan files (if you use the -out flag)
+# Example: *tfplan*
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
